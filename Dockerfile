@@ -27,6 +27,22 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 
+# Download and build SQLite 3.41.2
+WORKDIR /tmp
+RUN wget https://www.sqlite.org/2023/sqlite-autoconf-3410200.tar.gz \
+    && tar xvfz sqlite-autoconf-3410200.tar.gz \
+    && cd sqlite-autoconf-3410200 \
+    && ./configure --prefix=/usr/local \
+    && make \
+    && make install \
+    && rm -rf /tmp/sqlite-autoconf-3410200*
+
+
+# Ensure the newly installed SQLite version is used by setting PATH and LD_LIBRARY_PATH
+ENV PATH="/usr/local/bin:$PATH"
+ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+
+
 # Download, build, and install OpenSlide
 WORKDIR /tmp
 RUN wget https://github.com/openslide/openslide/releases/download/v3.4.1/openslide-3.4.1.tar.gz \

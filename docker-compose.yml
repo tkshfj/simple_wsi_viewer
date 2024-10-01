@@ -1,8 +1,9 @@
-version: '3.9'
+# version: '3.9'
 
 services:
   web:
-    image: wsi_viewer:latest
+    # image: wsi_viewer:latest
+    build: .  # Build the image locally from the Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
@@ -16,7 +17,8 @@ services:
       - celery
 
   celery:
-    image: wsi_viewer:latest
+    # image: wsi_viewer:latest
+    build: .  # Build the image locally from the Dockerfile
     command: celery -A wsi_viewer worker -l info
     volumes:
       - .:/app
